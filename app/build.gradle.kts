@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "mx.edu.utch.convertidormonedas"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "mx.edu.utch.convertidormonedas"
