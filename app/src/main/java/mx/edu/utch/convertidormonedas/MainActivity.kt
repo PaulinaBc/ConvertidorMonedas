@@ -2,26 +2,31 @@ package mx.edu.utch.convertidormonedas
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import mx.edu.utch.convertidormonedas.presenter.PCurrencyConversor
+import mx.edu.utch.convertidormonedas.view.ConvertView
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ConvertView {
 
-    fun convertir(view: View) {
-        val editText = findViewById<EditText>(R.id.editText)
-        val pesosString = editText.text.toString()
-        val pesos = pesosString.toDoubleOrNull() ?: 0.0
-        val dolares = pesos * 17.56
-        val dolaresString = String.format("%.2f", dolares)
-        val MNX = "MNX"
-        val USD = "USD"
-        val mensaje = "$pesosString $USD son $dolaresString $MNX"
-        Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
+        private lateinit var presenter: PCurrencyConversor
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            presenter = PCurrencyConversor(this)
+
+            findViewById<Button>(R.id.button_convertir).setOnClickListener {
+                val editText = findViewById<EditText>(R.id.editText)
+                val pesosString = editText.text.toString()
+                val pesos = pesosString.toDoubleOrNull() ?: 0.0
+                presenter.convertCurrency(pesos)
+            }
+        }
+
+        override fun showConversionResult(message: String) {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        }
     }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
-}
